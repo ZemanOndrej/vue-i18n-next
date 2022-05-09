@@ -41,7 +41,7 @@ async function compile(message: string): Promise<string> {
       sourceMap: true,
       onError: (err: CompileError) => errors.push(err)
     }
-    const { code, ast, map } = baseCompile(message, options)
+    const { ast, map } = baseCompile(message, options)
     if (errors.length > 0) {
       console.error(errors)
     }
@@ -51,9 +51,9 @@ async function compile(message: string): Promise<string> {
     console.log(`AST: `, ast)
     console.log('sourcemap', map)
 
-    const evalCode = new Function(`return ${code}`)()
-    lastSuccessCode =
-      evalCode.toString() + `\n\n// Check the console for the AST`
+    // const evalCode = new Function(`return ${code}`)()
+    // lastSuccessCode =
+    //   evalCode.toString() + `\n\n// Check the console for the AST`
     lastSuccessfulMap = await new SourceMapConsumer(map!)
     lastSuccessfulMap!.computeColumnSpans()
   } catch (e) {
